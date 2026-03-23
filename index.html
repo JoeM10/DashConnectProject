@@ -11,49 +11,59 @@
     <div class="grid-container">
     <section class="grid-item" id="dog-api">
         <h2>🐶 Random Dog</h2>
-        <button onclick="getDogImage()">Get Dog</button>
+        <button id="dog-button" onclick="getDogImage()">Get Dog</button>
         <div class="output" id="dog-output"></div>
     </section>
 
     <section class="grid-item" id="cat-api">
         <h2>🐱 Random Cat</h2>
-        <button onclick="getCatImage()">Get Cat</button>
+        <button id="cat-button" onclick="getCatImage()">Get Cat</button>
         <div class="output" id="cat-output"></div>
     </section>
 
     <section class="grid-item" id="weather-api">
         <h2>☀️ Weather Info</h2>
-        <button onclick="getWeather()">Get Weather</button>
+        <button id="weather-button" onclick="getWeather()">Get Weather</button>
+        <input class="input" id="weather-input" placeholder="US Zip Code" maxlength="5" required></input>
         <div class="output" id="weather-output"></div>
     </section>
 
     <section class="grid-item" id="currency-api">
         <h2>💱 Currency Rates</h2>
-        <button onclick="getExchangeRates()">Get Rates</button>
+        <div class="field">
+            <label for="currency-from">From</label>
+            <select name="currency-from" id="currency-from">
+            </select>
+
+            <label for="currency-to">To</label>
+            <select name="currency-to" id="currency-to">
+            </select>
+        </div>
+        <button id="exchange-button" onclick="getExchangeRates()">Get Rates</button>
         <div class="output" id="currency-output"></div>
     </section>
 
     <section class="grid-item" id="movies-api">
         <h2>🎮 Trending Movies</h2>
-        <button onclick="getMovies()">Get Movies</button>
+        <button id="movie-button" onclick="getMovies()">Get Movies</button>
         <div class="output" id="movies-output"></div>
     </section>
 
     <section class="grid-item" id="github-api">
         <h2>🧑‍💻 GitHub User</h2>
-        <button onclick="getGitHubUser()">Get User</button>
+        <button id="github-button" onclick="getGitHubUser()">Get User</button>
         <div class="output" id="github-output"></div>
     </section>
 
     <section class="grid-item" id="joke-api">
         <h2>🤣 Random Joke</h2>
-        <button onclick="getJoke()">Get Joke</button>
+        <button id="joke-button" onclick="getJoke()">Get Joke</button>
         <div class="output" id="joke-output"></div>
     </section>
 
     <section class="grid-item" id="public-api">
         <h2>📚 Public APIs</h2>
-        <button onclick="getPublicApiInfo()">Show One</button>
+        <button id="public-api-button" onclick="getPublicApiInfo()">Show One</button>
         <div class="output" id="publicapi-output"></div>
     </section>
     </div>
