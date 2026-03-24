@@ -1,3 +1,4 @@
+const tmdbApiKey = "YOUR_TMDB_API_KEY_HERE";
 const dogButton = document.getElementById("dog-button");
 const catButton = document.getElementById("cat-button");
 const weatherButton = document.getElementById("weather-button");
@@ -6,6 +7,7 @@ const movieButton = document.getElementById("movie-button");
 const githubButton = document.getElementById("github-button");
 const jokeButton = document.getElementById("joke-button");
 const publicApiButton = document.getElementById("public-api-button");
+const movieList = document.getElementById("movie-list");
 
 async function getDogImage() {
     dogButton.disabled = true;
@@ -125,6 +127,30 @@ async function getExchangeRates() {
     } finally {
         exchangeButton.disabled = false;
     }
+}
+
+async function getMovies() {
+    movieButton.disabled = true;
+    const apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbApiKey}&language=en-US&page=1`;
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Failed to fetch movie data.");
+        const movies = await response.json();
+        console.log(movies);
+        movieList.innerHTML = "";
+        for (let index = 0; index < 5; index++) {
+            const movie = movies.results[index];
+            const movieItem = document.createElement("li");
+            movieItem.innerHTML = `<h3>${movie.title}</h3><p>Release Date: ${movie.release_date}</p><p>Rating: ${movie.vote_average}</p>`;
+            movieList.appendChild(movieItem);
+        }
+    } catch (error) {
+        console.error("Error fetching movie data:", error);
+    } finally {
+        movieButton.disabled = false;
+    }
+
 }
 
 getCurrencies()

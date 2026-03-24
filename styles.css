@@ -98,3 +98,17 @@ img {
     color: aliceblue;
     margin: 5px;
 }
+
+#movie-list {
+    margin: 5px;
+    list-style-type: none;
+}
+
+#movie-list li h3 {
+    color: aliceblue;
+    text-decoration: underline;
+}
+
+#movie-list li p{
+    color: rgb(183, 189, 194);
+}
