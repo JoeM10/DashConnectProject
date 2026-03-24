@@ -112,3 +112,21 @@ img {
 #movie-list li p{
     color: rgb(183, 189, 194);
 }
+
+#github-user-input {
+    font-size: 15px;
+    font-weight: 600;
+    height: 33px;
+    width: 150px;
+    border-radius: 4px;
+    padding-left: 5px;
+}
+
+#github-output h3 {
+    color: aliceblue;
+}
+
+#github-output p {
+    color: aliceblue;
+    font-weight: 600;
+}

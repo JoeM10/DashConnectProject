@@ -8,6 +8,7 @@ const githubButton = document.getElementById("github-button");
 const jokeButton = document.getElementById("joke-button");
 const publicApiButton = document.getElementById("public-api-button");
 const movieList = document.getElementById("movie-list");
+const githubOutput = document.getElementById("github-output");
 
 async function getDogImage() {
     dogButton.disabled = true;
@@ -89,7 +90,6 @@ async function getCurrencies() {
         if (!response.ok) throw new Error ("Failed to fetch currencies.");
         const currencies = await response.json();
         const currencyList = Object.keys(currencies);
-        console.log(currencyList);
 
         currencyList.forEach(currency => {
             const fromCurrency = document.createElement("option");
@@ -156,13 +156,18 @@ async function getMovies() {
 
 async function getGitHubUser() {
     githubButton.disabled = true;
-    const apiUrl = "https://api.github.com/users/octocat";
+    const username = document.getElementById("github-user-input").value;
+    const apiUrl = `https://api.github.com/users/${username}`;
+    githubOutput.innerHTML = "";
 
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch GitHub user data.");
         const userData = await response.json();
         console.log(userData);
+        const dateTime = userData.created_at;
+        githubOutput.innerHTML = `<h3>${userData.login}</h3><img id="github-avatar" src=${userData.avatar_url} /><p>Date created: ${dateTime.split("T")[0]}</p><p>Followers: ${userData.followers}</p><p>Following: ${userData.following}</p><p>Public Repos: ${userData.public_repos}</p>`;
+
     } catch (error) {
         console.error("Error fetching GitHub user data:", error);
     } finally {
