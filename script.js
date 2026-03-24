@@ -82,25 +82,26 @@ async function getWeather() {
 };
 
 async function getCurrencies() {
-    const apiUrl = `https://api.frankfurter.dev/v2/currencies`;
+    const apiUrl = `https://api.frankfurter.app/currencies`;
 
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error ("Failed to fetch currencies.");
         const currencies = await response.json();
-        console.log(currencies);
+        const currencyList = Object.keys(currencies);
+        console.log(currencyList);
 
-        currencies.forEach(currency => {
+        currencyList.forEach(currency => {
             const fromCurrency = document.createElement("option");
-            fromCurrency.value = currency.iso_code;
-            fromCurrency.innerText = currency.iso_code;
+            fromCurrency.value = currency;
+            fromCurrency.innerText = currency;
             document.getElementById("currency-from").appendChild(fromCurrency);
             const fromCurrencySelect = document.getElementById("currency-from");
             fromCurrencySelect.value = "USD";
 
             const toCurrency = document.createElement("option");
-            toCurrency.value = currency.iso_code;
-            toCurrency.innerText = currency.iso_code;
+            toCurrency.value = currency;
+            toCurrency.innerText = currency;
             document.getElementById("currency-to").appendChild(toCurrency);
             const toCurrencySelect = document.getElementById("currency-to");
             toCurrencySelect.value = "EUR";
@@ -113,7 +114,7 @@ async function getCurrencies() {
 
 async function getExchangeRates() {
     exchangeButton.disabled = true;
-    const apiUrl = `https://api.frankfurter.dev/v1/latest?base=${document.getElementById("currency-from").value}&symbols=${document.getElementById("currency-to").value}`;
+    const apiUrl = `https://api.frankfurter.app/latest?from=${document.getElementById("currency-from").value}&to=${document.getElementById("currency-to").value}`;
 
     try {
         const response = await fetch(apiUrl)
@@ -123,6 +124,7 @@ async function getExchangeRates() {
         document.getElementById("currency-output").innerHTML = `<p> 1 ${exchangeData.base} = ${exchangeData.rates[document.getElementById("currency-to").value]} ${document.getElementById("currency-to").value}`
 
     } catch (error) {
+        document.getElementById("currency-output").innerHTML = `<p>Error fetching exchange rates. Please try again.</p>`;
         console.error("Error fetching exchange rates:", error);
     } finally {
         exchangeButton.disabled = false;
@@ -149,8 +151,23 @@ async function getMovies() {
         console.error("Error fetching movie data:", error);
     } finally {
         movieButton.disabled = false;
-    }
+    };
+};
 
-}
+async function getGitHubUser() {
+    githubButton.disabled = true;
+    const apiUrl = "https://api.github.com/users/octocat";
 
-getCurrencies()
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Failed to fetch GitHub user data.");
+        const userData = await response.json();
+        console.log(userData);
+    } catch (error) {
+        console.error("Error fetching GitHub user data:", error);
+    } finally {
+        githubButton.disabled = false;
+    };
+};
+
+getCurrencies();
