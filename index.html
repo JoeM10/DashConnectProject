@@ -30,14 +30,12 @@
 
     <section class="grid-item" id="currency-api">
         <h2>💱 Currency Rates</h2>
-        <div class="field">
+        <div class="currency-selections">
             <label for="currency-from">From</label>
-            <select name="currency-from" id="currency-from">
-            </select>
+            <select name="currency-from" id="currency-from"></select>
 
             <label for="currency-to">To</label>
-            <select name="currency-to" id="currency-to">
-            </select>
+            <select name="currency-to" id="currency-to"></select>
         </div>
         <button id="exchange-button" onclick="getExchangeRates()">Get Rates</button>
         <div class="output" id="currency-output"></div>

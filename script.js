@@ -79,14 +79,52 @@ async function getWeather() {
     }
 };
 
-async function getExchangeRates() {
-    exchangeButton.disabled =true;
-    const apiURL = `https://api.frankfurter.dev/v1/latest?base=USD&symbols=EUR`;
+async function getCurrencies() {
+    const apiUrl = `https://api.frankfurter.dev/v2/currencies`;
 
     try {
-        const response = await fetch(apiURL);
-        if )!response.ok) throw new Error ("Failed to fetch exchange rates.");
-        const data = await response.json();
-        console.log(data);
-    }
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error ("Failed to fetch currencies.");
+        const currencies = await response.json();
+        console.log(currencies);
+
+        currencies.forEach(currency => {
+            const fromCurrency = document.createElement("option");
+            fromCurrency.value = currency.iso_code;
+            fromCurrency.innerText = currency.iso_code;
+            document.getElementById("currency-from").appendChild(fromCurrency);
+            const fromCurrencySelect = document.getElementById("currency-from");
+            fromCurrencySelect.value = "USD";
+
+            const toCurrency = document.createElement("option");
+            toCurrency.value = currency.iso_code;
+            toCurrency.innerText = currency.iso_code;
+            document.getElementById("currency-to").appendChild(toCurrency);
+            const toCurrencySelect = document.getElementById("currency-to");
+            toCurrencySelect.value = "EUR";
+        });
+
+    } catch (error) {
+        console.error("Error fetching currencies:", error);
+    };
 };
+
+async function getExchangeRates() {
+    exchangeButton.disabled = true;
+    const apiUrl = `https://api.frankfurter.dev/v1/latest?base=${document.getElementById("currency-from").value}&symbols=${document.getElementById("currency-to").value}`;
+
+    try {
+        const response = await fetch(apiUrl)
+        if (!response.ok) throw new Error ("Failed to fetch exchange rates.");
+        const exchangeData = await response.json();
+        console.log(exchangeData);
+        document.getElementById("currency-output").innerHTML = `<p> 1 ${exchangeData.base} = ${exchangeData.rates[document.getElementById("currency-to").value]} ${document.getElementById("currency-to").value}`
+
+    } catch (error) {
+        console.error("Error fetching exchange rates:", error);
+    } finally {
+        exchangeButton.disabled = false;
+    }
+}
+
+getCurrencies()

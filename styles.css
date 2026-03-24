@@ -78,3 +78,23 @@ img {
     color: aliceblue;
     font-weight: 600;
 }
+
+.currency-selections {
+    margin: 5px;
+}
+
+.currency-selections label {
+    font-weight: 600;
+    color: aliceblue;
+    margin: 5px;
+}
+
+#exchange-button {
+    margin-top: 15px;
+}
+
+#currency-output p {
+    font-weight: 600;
+    color: aliceblue;
+    margin: 5px;
+}
