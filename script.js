@@ -1,4 +1,4 @@
-const tmdbApiKey = "YOUR_TMDB_API_KEY_HERE";
+const tmdbApiKey = "YOUR_TMDB_API_KEY_HERE"; // Replace with your actual TMDB API key
 const dogButton = document.getElementById("dog-button");
 const catButton = document.getElementById("cat-button");
 const weatherButton = document.getElementById("weather-button");
@@ -9,6 +9,7 @@ const jokeButton = document.getElementById("joke-button");
 const publicApiButton = document.getElementById("public-api-button");
 const movieList = document.getElementById("movie-list");
 const githubOutput = document.getElementById("github-output");
+const jokeOutput = document.getElementById("joke-output");
 
 async function getDogImage() {
     dogButton.disabled = true;
@@ -173,6 +174,24 @@ async function getGitHubUser() {
     } finally {
         githubButton.disabled = false;
     };
+};
+
+async function getJoke() {
+    jokeButton.disabled = true;
+    const apiUrl = "https://official-joke-api.appspot.com/random_joke";
+    jokeOutput.innerHTML = "";
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Failed to fetch joke.");
+        const jokeData = await response.json();
+        console.log(jokeData);
+        jokeOutput.innerHTML = `<p>${jokeData.setup}</p><br/><p>${jokeData.punchline}</p>`;
+    } catch (error) {
+        console.error("Error fetching joke:", error);
+    } finally {
+        jokeButton.disabled = false;
+    }
 };
 
 getCurrencies();

@@ -130,3 +130,8 @@ img {
     color: aliceblue;
     font-weight: 600;
 }
+
+#joke-output p {
+    font-weight: 600;
+    color: aliceblue;
+}
