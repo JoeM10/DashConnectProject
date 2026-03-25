@@ -1,4 +1,5 @@
 const tmdbApiKey = "YOUR_TMDB_API_KEY_HERE"; // Replace with your actual TMDB API key
+const apiNinjasKey = "YOUR_API_NINJAS_API_KEY_HERE"; // Replace with your actual API Ninjas API key
 const dogButton = document.getElementById("dog-button");
 const catButton = document.getElementById("cat-button");
 const weatherButton = document.getElementById("weather-button");
@@ -6,10 +7,11 @@ const exchangeButton = document.getElementById("exchange-button");
 const movieButton = document.getElementById("movie-button");
 const githubButton = document.getElementById("github-button");
 const jokeButton = document.getElementById("joke-button");
-const publicApiButton = document.getElementById("public-api-button");
+const quoteButton = document.getElementById("quote-api-button");
 const movieList = document.getElementById("movie-list");
 const githubOutput = document.getElementById("github-output");
 const jokeOutput = document.getElementById("joke-output");
+const quoteOutput = document.getElementById("quote-api-output");
 
 async function getDogImage() {
     dogButton.disabled = true;
@@ -72,7 +74,7 @@ async function getWeather() {
         const {latitude, longitude, city} = await getLatLong(location);
         const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`;
         const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error ("Failed to festch weather data.");
+        if (!response.ok) throw new Error ("Failed to fetch weather data.");
         const data = await response.json();
         console.log(data);
         document.getElementById("weather-output").innerHTML = `<p>Current Temp in ${city}: ${data.current.temperature_2m}°F</p>`;
@@ -84,25 +86,25 @@ async function getWeather() {
 };
 
 async function getCurrencies() {
-    const apiUrl = `https://api.frankfurter.app/currencies`;
+    const apiUrl = `https://api.frankfurter.dev/v2/currencies`;
 
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error ("Failed to fetch currencies.");
         const currencies = await response.json();
-        const currencyList = Object.keys(currencies);
+        console.log(currencies);
 
-        currencyList.forEach(currency => {
+        currencies.forEach(currency => {
             const fromCurrency = document.createElement("option");
-            fromCurrency.value = currency;
-            fromCurrency.innerText = currency;
+            fromCurrency.value = currency.iso_code;
+            fromCurrency.innerText = currency.iso_code;
             document.getElementById("currency-from").appendChild(fromCurrency);
             const fromCurrencySelect = document.getElementById("currency-from");
             fromCurrencySelect.value = "USD";
 
             const toCurrency = document.createElement("option");
-            toCurrency.value = currency;
-            toCurrency.innerText = currency;
+            toCurrency.value = currency.iso_code;
+            toCurrency.innerText = currency.iso_code;
             document.getElementById("currency-to").appendChild(toCurrency);
             const toCurrencySelect = document.getElementById("currency-to");
             toCurrencySelect.value = "EUR";
@@ -115,14 +117,14 @@ async function getCurrencies() {
 
 async function getExchangeRates() {
     exchangeButton.disabled = true;
-    const apiUrl = `https://api.frankfurter.app/latest?from=${document.getElementById("currency-from").value}&to=${document.getElementById("currency-to").value}`;
+    const apiUrl = `https://api.frankfurter.dev/v2/rates?base=${document.getElementById("currency-from").value}&quotes=${document.getElementById("currency-to").value}`;
 
     try {
         const response = await fetch(apiUrl)
         if (!response.ok) throw new Error ("Failed to fetch exchange rates.");
         const exchangeData = await response.json();
         console.log(exchangeData);
-        document.getElementById("currency-output").innerHTML = `<p> 1 ${exchangeData.base} = ${exchangeData.rates[document.getElementById("currency-to").value]} ${document.getElementById("currency-to").value}`
+        document.getElementById("currency-output").innerHTML = `<p> 1 ${document.getElementById("currency-from").value} = ${exchangeData[0].rate} ${document.getElementById("currency-to").value}`
 
     } catch (error) {
         document.getElementById("currency-output").innerHTML = `<p>Error fetching exchange rates. Please try again.</p>`;
@@ -191,6 +193,23 @@ async function getJoke() {
         console.error("Error fetching joke:", error);
     } finally {
         jokeButton.disabled = false;
+    }
+};
+
+async function getQuote() {
+    quoteButton.disabled = true;
+    const apiUrl = `https://api.api-ninjas.com/v2/randomquotes?category=all`;
+
+    try {
+        const response = await fetch(apiUrl, {headers: {"X-Api-Key": apiNinjasKey}});
+        if (!response.ok) throw new Error("Failed to fetch quote data.");
+        const quoteData = await response.json();
+        console.log(quoteData);
+        quoteOutput.innerHTML = `<p id="quote-text">"${quoteData[0].quote}"</p></br><p id="quote-author"> - ${quoteData[0].author}</p>`;
+    } catch (error) {
+        console.error("Error fetching quote data:", error);
+    } finally {
+        quoteButton.disabled = false;
     }
 };
 

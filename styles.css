@@ -135,3 +135,14 @@ img {
     font-weight: 600;
     color: aliceblue;
 }
+
+#quote-text {
+    color: aliceblue;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#quote-author {
+    color: rgb(190, 196, 201);
+    font-weight: 600;
+}
